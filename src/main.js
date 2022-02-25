@@ -179,7 +179,10 @@ document.addEventListener("deviceready", async function () {
 
     const aria2FileURL = appDir + "www/aria2/android/aria2c"
     const aria2ConfFileURL = appDir + "www/aria2/aria2.conf"
+    const aria2DhtFileURL = appDir + "www/aria2/dht.dat"
+    const aria2Dht6FileURL = appDir + "www/aria2/dht6.dat"
     const downloadDir = "/storage/emulated/0/Download/"
+    const aria2DhtDir = "/storage/emulated/0/Download/.aria2/"
 
     // 显示 AriaNg GUI for Android 的版本号
     const appVersion = await top.cordova.getAppVersion.getVersionNumber()
@@ -198,6 +201,16 @@ document.addEventListener("deviceready", async function () {
     // 仅当aria2.conf文件不存在时复制aria2.conf, 防止配置文件被覆盖
     if (!await fileOrDirExistsPromise(dataDir + "aria2.conf")) {
         await copyFilePromise(aria2ConfFileURL, dataDir)
+    }
+
+    // 仅当dht.dat文件不存在时复制dht.dat, 防止文件被覆盖
+    if (!await fileOrDirExistsPromise(aria2DhtDir + "dht.dat")) {
+        await copyFilePromise(aria2DhtFileURL, aria2DhtDir)
+    }
+
+    // 仅当dht6.dat文件不存在时复制dht6.dat, 防止文件被覆盖
+    if (!await fileOrDirExistsPromise(aria2DhtDir + "dht6.dat")) {
+        await copyFilePromise(aria2Dht6FileURL, aria2DhtDir)
     }
 
     // 复制aria2c
